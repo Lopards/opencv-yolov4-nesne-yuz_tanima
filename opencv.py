@@ -1,14 +1,14 @@
 #word dosyası adım 6
 import cv2
 import numpy as np
-from  gui_buttons import Buttons
+from  gui_buttons import Butonlar
 
-button = Buttons()
-button.add_button("insan", 20, 20)
-button.add_button("cell phone", 20, 100)
-button.add_button("keyboard", 20, 180)
-button.add_button("remote", 20, 260)
-button.add_button("scissors", 20, 340)
+button = Butonlar()
+button.buton_ekle("insan", 20, 20)
+button.buton_ekle("cell phone", 20, 100)
+button.buton_ekle("keyboard", 20, 180)
+button.buton_ekle("remote", 20, 260)
+button.buton_ekle("scissors", 20, 340)
 
 net = cv2.dnn.readNet("dnn_model/yolov4-tiny.weights", "dnn_model/yolov4-tiny.cfg")
 model = cv2.dnn.DetectionModel(net)
@@ -31,7 +31,7 @@ def click_button(event, x, y, flags, param):
 
     if event == cv2.EVENT_LBUTTONDOWN:  # eğer event yani bir tıklanma varsa sol klik
         print(x, y)
-        button.button_click(x,y)
+        button.buton_tiklama(x,y)
 
 
 
@@ -52,7 +52,7 @@ while True:
     ret, frame = cap.read()
     # Kameradan bir kare okuyup, nesneleri tespit etmeye çalışıyoruz.
 
-    aktif_butonlar = button.active_buttons_list()
+    aktif_butonlar = button.aktif_buton_listesi()
     #print(aktif_butonlar)
 
     (class_ids, scores, boxes) = model.detect(frame, confThreshold=0.3, nmsThreshold=0.4)
@@ -71,7 +71,7 @@ while True:
 
         # cv2.rectangle(frame, (20, 20), (220,70),(0,0,220),-1) #kutucuk oluşturuyoruz sırasıyal koordinat, genişliği rengi ve -1 ise içinin renge boyanması
 
-    button.display_buttons(frame)
+    button.buton_goster(frame)
     cv2.imshow('frame', frame)
     key = cv2.waitKey(1)
     if key == 27:
